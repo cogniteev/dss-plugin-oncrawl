@@ -33,7 +33,7 @@ def get_projects(api_key):
             r.raise_for_status()
             items = r.json()
 
-            offset = items['meta']['offset'] + items['meta']['limit']
+            offset = int(items['meta']['offset']) + int(items['meta']['limit'])
 
             for item in items['projects']:
                 response.append({'id': item['id'], 'name':item['name']})
@@ -80,7 +80,7 @@ def get_live_crawls(config, projects_id, timestamp_range, limit=None):
             r.raise_for_status()
 
             items = r.json()
-            offset = items['meta']['offset'] + items['meta']['limit']
+            offset = int(items['meta']['offset']) + int(items['meta']['limit'])
 
             for item in items['crawls']:
 
