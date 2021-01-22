@@ -49,7 +49,7 @@ def get_projects(api_key):
             
         except Exception as e:
             offset = None
-            response = {'error' : e}
+            response = {'error' : repr(e)}
     
     return response
 
@@ -106,7 +106,7 @@ def get_live_crawls(config, projects_id, timestamp_range, limit=None):
         response = {'error': build_human_error(r)}
 
     except Exception as e:
-        response = {'error' : e}
+        response = {'error' : repr(e)}
 
     return response
 
