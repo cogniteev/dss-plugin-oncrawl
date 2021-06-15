@@ -130,7 +130,11 @@ for i, id in enumerate(ids):
 
         # if user set his list of fields
         if 'fields' in json.loads(config['oql']).keys():
+            
             user_fields = json.loads(config['oql'])['fields']
+            if not isinstance(user_fields, list):
+                raise Exception('The input value for the key "fields" has to be a list. Please enumerate fields you want to export like this: "fields": ["<field_name>"] ')
+            
 
             # display error in logs if field does not exist
             print([f'bad field: {item}' for item in user_fields if item not in f['dataset_schema_field_list']])
