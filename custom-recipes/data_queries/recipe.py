@@ -135,13 +135,14 @@ for i, id in enumerate(ids):
             if not isinstance(user_fields, list):
                 raise Exception('The input value for the key "fields" has to be a list. Please enumerate fields you want to export like this: "fields": ["<field_name>"] ')
             
+            if len(user_fields) > 0:
 
-            # display error in logs if field does not exist
-            print([f'bad field: {item}' for item in user_fields if item not in f['dataset_schema_field_list']])
+                # display error in logs if field does not exist
+                print([f'bad field: {item}' for item in user_fields if item not in f['dataset_schema_field_list']])
 
-            # filter full fields list, keep those required by user + metadata
-            f['dataset_schema'] = [item for item in f['dataset_schema'] if item['name'] in user_fields]
-            f['dataset_schema_field_list'] = [item for item in f['dataset_schema_field_list'] if item in user_fields]
+                # filter full fields list, keep those required by user + metadata
+                f['dataset_schema'] = [item for item in f['dataset_schema'] if item['name'] in user_fields]
+                f['dataset_schema_field_list'] = [item for item in f['dataset_schema_field_list'] if item in user_fields]
 
 
         schema['dataset_schema'] = schema['dataset_schema'] + f['dataset_schema']
