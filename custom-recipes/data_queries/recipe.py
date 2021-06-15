@@ -129,7 +129,7 @@ for i, id in enumerate(ids):
             continue
 
         # if user set his list of fields
-        if 'fields' in json.loads(config['oql']).keys():
+        if 'fields' in json.loads(config['oql']):
             
             user_fields = json.loads(config['oql'])['fields']
             if not isinstance(user_fields, list):
