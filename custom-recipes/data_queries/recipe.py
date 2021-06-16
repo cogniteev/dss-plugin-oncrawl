@@ -4,6 +4,7 @@ from dataiku.customrecipe import get_output_names_for_role, get_recipe_config
 import oncrawl as oc
 from oncrawl import oncrawlDataAPI as ocd
 from oncrawl import oncrawlProjectAPI as ocp
+import json
 
 output_names = get_output_names_for_role('output')
 output_datasets = [dataiku.Dataset(name) for name in output_names]
@@ -126,7 +127,24 @@ for i, id in enumerate(ids):
         
         if 'item_schema' not in f.keys() or len(f['item_schema']) == 0:
             continue
-        
+
+        # if user set his list of fields
+        if 'fields' in json.loads(config['oql']):
+            
+            user_fields = json.loads(config['oql'])['fields']
+            if not isinstance(user_fields, list):
+                raise Exception('The input value for the key "fields" has to be a list. Please enumerate fields you want to export like this: "fields": ["<field_name>"] ')
+            
+            if len(user_fields) > 0:
+
+                # display error in logs if field does not exist
+                print([f'bad field: {item}' for item in user_fields if item not in f['dataset_schema_field_list']])
+
+                # filter full fields list, keep those required by user + metadata
+                f['dataset_schema'] = [item for item in f['dataset_schema'] if item['name'] in user_fields]
+                f['dataset_schema_field_list'] = [item for item in f['dataset_schema_field_list'] if item in user_fields]
+
+
         schema['dataset_schema'] = schema['dataset_schema'] + f['dataset_schema']
         schema['dataset_schema_field_list'] = schema['dataset_schema_field_list'] + f['dataset_schema_field_list']
 
